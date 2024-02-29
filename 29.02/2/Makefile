@@ -1,7 +1,7 @@
 EXE = output
 all: build
 
-build: main.cpp graph.cpp
+build: main.cpp
 	g++ main.cpp -o $(EXE)
 
 run: build $(EXE)

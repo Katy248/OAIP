@@ -29,11 +29,14 @@ int main()
 
   run({}, k, n, 0, &result);
   
+  int count = 0;
   for (auto i : result) {
+    count++;
     for (auto j : i) {
       cout << j << " ";
     }
     cout << endl;
   }
+  cout << count << endl;
   return 0;
 }
