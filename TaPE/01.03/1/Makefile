@@ -8,5 +8,8 @@ $(EXE): $(SOURCES)
 run: $(EXE)
 	./$(EXE)
 
+test: $(EXE) test.test
+	./$(EXE) < test.test
+
 clear:
 	rm -f ./$(EXE)
