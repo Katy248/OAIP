@@ -1,5 +1,5 @@
 EXE = output
-SOURCES = main.cpp matrix.cpp
+SOURCES = main.cpp
 all: $(EXE)
 
 $(EXE): $(SOURCES)
