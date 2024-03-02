@@ -1,1 +1,9 @@
+# output files
 output
+output.*
+bin/
+
+# editor folders
+.vs/
+.vscode/
+.idea/
