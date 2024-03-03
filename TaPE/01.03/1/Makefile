@@ -1,18 +1,17 @@
-ifeq ($(OS), Windows_NT)
-	EXE = ./output.exe
-else
-	EXE = ./output
-endif
-
-SOURCES = main.cpp
-TEST_INPUT = test.test
+SOURCES = ./main.cpp
+BIN = ./bin
+TEST_INPUT = ./tests/test
+EXE = $(BIN)/output
 
 all: $(EXE)
 
-$(EXE): $(SOURCES)
+$(EXE): $(BIN) $(SOURCES)
 	@echo "Current OS: $(OS)"
 	@echo "Executable name: $(EXE)"
-	g++ $(SOURCES) -o $(EXE)
+	g++ $(SOURCES) -o $(EXE) -ggdb
+
+$(BIN):
+	mkdir $@
 
 run: $(EXE)
 	$(EXE)
@@ -20,8 +19,8 @@ run: $(EXE)
 test: $(EXE) $(TEST_INPUT)
 	$(EXE) < $(TEST_INPUT)
 
-test-win: $(EXE) $(TEST_INPUT)
-	pwsh -NoProfile -NonInteractive -NoLogo -CommandWithArgs " Start-Process -FilePath ./output.exe -RedirectStandardInput ./test.test -NoNewWindow "
-
 clear:
-	rm -f $(EXE)
+	rm -rf $(BIN)
+
+# test-win: $(EXE) $(TEST_INPUT)
+# 	pwsh -NoProfile -NonInteractive -NoLogo -CommandWithArgs " Start-Process -FilePath ./output.exe -RedirectStandardInput ./test.test -NoNewWindow "
