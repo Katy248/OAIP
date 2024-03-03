@@ -6,6 +6,11 @@ You know you want to take it all, you can't resist +
 We are part of the illusion now +
 We are just part of the illusion now
 
+[quote, Lady Gaga]
+I won't cry for you +
+I won't crucify the things you do +
+I won't cry for you, see (See)
+
 == Сборка
 
 В каждом проекте на `C/C++` лежит `Makefile`, поэтому запустить проекты можно командой
