@@ -30,9 +30,6 @@ clear:
 build-alt: _create-binaries-dir
 	g++ {{source-files-alt}} -o {{output}} -ggdb
 
-# Test alternate program
-test-alt: build-alt test
-
 # Build and run alternate version
 run-alt: build-alt run
 
