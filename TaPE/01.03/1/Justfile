@@ -1,0 +1,38 @@
+source-files := "main.cpp"
+source-files-alt := "AlternativeSolution.cpp"
+binaries-dir := "binaries-dir"
+test-input := "test"
+output := binaries-dir + "/output"
+
+_default:
+    @just -l
+
+_create-binaries-dir:
+	mkdir -p {{binaries-dir}}
+
+# Build
+build : _create-binaries-dir
+	g++ {{source-files}} -o {{output}} -ggdb
+
+# Test
+test: build
+	./{{output}} < {{test-input}}
+
+# Build and run
+run: build
+	./{{output}}
+
+# Clear all outputs
+clear:
+	rm -rf {{binaries-dir}}
+
+# Build alternate version
+build-alt: _create-binaries-dir
+	g++ {{source-files-alt}} -o {{output}} -ggdb
+
+# Test alternate program
+test-alt: build-alt test
+
+# Build and run alternate version
+run-alt: build-alt run
+
