@@ -20,6 +20,8 @@ I won't cry for you, see (See)
 make run
 ----
 
-== Contribution
+include::Contributing.adoc[leveloffset=1]
 
-Просто заделай *Pull Request*.
+== Лицензия
+
+include::LICENSE[leveloffset=1]
