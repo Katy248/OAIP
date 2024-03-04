@@ -1,6 +1,6 @@
 source-files := "main.cpp"
 source-files-alt := "AlternativeSolution.cpp"
-binaries-dir := "binaries-dir"
+binaries-dir := "bin"
 test-input := "test"
 output := binaries-dir + "/output"
 
