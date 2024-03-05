@@ -1,0 +1,20 @@
+BASE_SOURCES = src/crypt.cpp
+ENCRYPT_SOURCES = $(BASE_SOURCES) src/encrypt.cpp
+DECRYPT_SOURCES = $(BASE_SOURCES) src/decrypt.cpp
+BIN_DIR = bin
+ENCRYPT_OUT = $(BIN_DIR)/encrypt 
+DECRYPT_OUT = $(BIN_DIR)/decrypt 
+
+all: $(ENCRYPT_OUT) $(DECRYPT_OUT)
+
+$(DECRYPT_OUT): $(DECRYPT_SOURCES) $(BIN_DIR)
+	g++ $(DECRYPT_SOURCES) -o $(DECRYPT_OUT)
+
+$(ENCRYPT_OUT): $(ENCRYPT_SOURCES) $(BIN_DIR)
+	g++ $(ENCRYPT_SOURCES) -o $(ENCRYPT_OUT)
+
+$(BIN_DIR):
+	mkdir $@
+
+clear:
+	rm -rf $(BIN_DIR)

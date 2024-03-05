@@ -1,4 +1,5 @@
 #include <iostream>
+#include "crypt.h"
 
 using std::cerr;
 using std::cin;
@@ -22,20 +23,9 @@ int main(int argc, char **argv)
         return 2;
     }
 
-    int digits[4];
+    uint *digits = to_digits_array(value);
 
-    for (int i = 0; i < 4; i++)
-    {
-        digits[4 - 1 - i] = value % 10; /* get digit */
-        digits[4 -1 - i] = (digits[4 -1 - i] + 7) % 10; /* encrypt digit */
-        value /= 10;
-    }
-
-    for (int i = 0; i < 4; i++)
-    {
-        cout << digits[i]; 
-    }
-    cout << endl;
+    cout << encrypt(digits) << endl;
 
     return 0;
 }
