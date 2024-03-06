@@ -68,13 +68,13 @@ void out_card(Card &our_card)
 
             if (x.checked)
             {
-                cout << "[X]"
+                cout << "[" << x.number << "]"
                      << " ";
             }
             else
             {
-                cout << x.number << " ";
             }
+            cout << x.number << " ";
         }
         cout << std::endl;
     }
