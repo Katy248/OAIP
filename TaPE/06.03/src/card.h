@@ -2,11 +2,10 @@
 #include "includes.h"
 #define BINGO_SIZE 5
 
-using std::map;
 
 struct Card
 {
-	map<char, Cell[BINGO_SIZE]> lines;
+	Cell lines[BINGO_SIZE][BINGO_SIZE];
 };
 struct Cell
 {
