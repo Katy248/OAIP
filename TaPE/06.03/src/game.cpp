@@ -1,11 +1,9 @@
 #include <iostream>
+#include <stdlib.h>
 
 #include "game.h"
 #include "card.h"
 #include "rand_card.h"
-
-using std::cout;
-using std::endl;
 
 int start()
 {
@@ -27,6 +25,8 @@ uint play()
         iter_count++;
         uint number = generate_numbers(1, 60);
         check_cell(Card, number);
+        system("cls");
+        out_card(card);
     }
 
     cout << "Iteration count: " << iter_count << endl;
