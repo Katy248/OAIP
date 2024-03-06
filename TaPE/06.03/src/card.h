@@ -18,6 +18,6 @@ void out_card(Card &);
 /// </summary>
 /// <param name=""></param>
 /// <param name=""></param>
-void check_cell(Card &uint);
+void check_cell(Card &, uint);
 
 bool is_winner(Card &);

@@ -9,6 +9,17 @@ using std::endl;
 
 int start()
 {
+    uint sim_count = 1000;
+    long uint all_times = 0;
+    for (uint i = 0; i < sim_count; i++)
+    {
+        all_times += play();
+    }
+    cout << "Average iterations: " << all_times / sim_count << endl;
+}
+
+uint play()
+{
     Card card = create_card();
     int iter_count = 0;
     while (!is_winner(card))
