@@ -1,4 +1,4 @@
-#include "card.h"
+﻿#include "card.h"
 #include "includes.h"
 #include "iostream"
 #include "rand_card.h"
@@ -47,5 +47,34 @@ void check_cell(Card &card, uint value)
                 return;
             }
         }
+    }
+}
+
+void out_card(Card& our_card) {
+    for (int i = 0; i < BINGO_SIZE; i++) {
+        switch (i) {
+        case 0:
+            cout << "B: ";
+            break;
+        case 1:
+            cout << "I: ";
+            break;
+        case 2:
+            cout << "N: ";
+            break;
+        case 3:
+            cout << "I: ";
+            break;
+        case 4:
+            cout << "G: ";
+            break;
+        }
+        for (auto x : our_card[i]) {
+            if (x.checked)
+                cout << "☓" << " ";
+            else
+                cout << x << " ";
+        }
+        cout << "\n";
     }
 }
