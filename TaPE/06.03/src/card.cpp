@@ -1,5 +1,39 @@
 #include "card.h"
 #include "includes.h"
+#include "iostream"
+#include "rand_card.h"
+
+Card create_card() {
+    Card newcard;
+    //int b_cont[BINGO_SIZE], i_cont[BINGO_SIZE], n_cont[BINGO_SIZE], g_cont[BINGO_SIZE], o_cont[BINGO_SIZE];
+    set <int> b_cont, i_cont, n_cont, i_cont, g_cont;
+    while (b_cont.size()!=5) {
+        b_cont.insert(generate_numbers(1, 15));
+    }
+    while (i_cont.size() != 5) {
+        i_cont.insert(generate_numbers(16, 30));
+    }
+    while (n_cont.size() != 5) {
+        n_cont.insert(generate_numbers(31, 45));
+    }
+    while (g_cont.size() != 5) {
+        g_cont.insert(generate_numbers(46, 60));
+    }
+    while (i_cont.size() != 5) {
+        i_cont.insert(generate_numbers(61, 75));
+    }
+
+    for (int i = 0; i < BINGO_SIZE; i++) {
+        newcard.lines.insert({ 'B',b_cont });
+        newcard.lines.insert({ 'I',i_cont });
+        newcard.lines.insert({ 'N',i_cont });
+        newcard.lines.insert({ 'G',i_cont });
+        newcard.lines.insert({ 'O',i_cont });
+
+    }
+
+    return newcard;
+}
 
 void check_cell(Card &card, uint value)
 {
