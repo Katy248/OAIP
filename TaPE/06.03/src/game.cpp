@@ -5,9 +5,6 @@
 #include "card.h"
 #include "rand_card.h"
 
-using std::cout;
-using std::endl;
-
 int start()
 {
     uint sim_count = 1000;
