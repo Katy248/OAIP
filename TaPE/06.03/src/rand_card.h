@@ -1,9 +1,7 @@
 #include "includes.h"
 
-/// <summary>
-/// Генерация чисел по диапазону от минимума до максимума
-/// </summary>
-/// <param name=""></param>
-/// <param name=""></param>
-/// <returns></returns>
-uint generate_numbers(uint,uint); 
+/// @brief Generates random number in specified range
+/// @param Min value
+/// @param Max value
+/// @return Random number
+uint generate_number(uint, uint);
