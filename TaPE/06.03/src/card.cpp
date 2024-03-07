@@ -75,7 +75,7 @@ void out_card(Card &our_card)
             {
             }
             */
-            cout << x.number << " (" << x.checked << ") ";
+            cout << x.number << " (" << (x.checked ? "X" : " ") << ") ";
         }
         cout << std::endl;
     }

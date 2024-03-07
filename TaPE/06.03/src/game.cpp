@@ -5,28 +5,34 @@
 #include "card.h"
 #include "rand_card.h"
 
+using std::stoi;
 using std::chrono::milliseconds;
-//using std::this_thread::sleep_for;
 
 uint play();
 
-int start()
+int start(int argc, char **argv)
 {
-    clog << "[LOG] Start game" << endl;
-    uint sim_count = 1;
+    uint sim_count = 10;
+
+    if (argc >= 2)
+    {
+        sim_count = stoi(argv[1]);
+    }
+
+    // clog << "[LOG] Start game" << endl;
     long uint all_times = 0;
     for (uint i = 0; i < sim_count; i++)
     {
         all_times += play();
     }
     cout << "Average iterations: " << all_times / sim_count << endl;
-    clog << "[LOG] End game" << endl;
+    // clog << "[LOG] End game" << endl;
     return 0;
 }
 
 uint play()
 {
-    clog << "[LOG] Start session" << endl;
+    // clog << "[LOG] Start session" << endl;
     Card game_card = create_card();
     int iter_count = 0;
     cout << endl;
@@ -41,9 +47,9 @@ uint play()
 #else
         system("clear");
 #endif
-        
+
         out_card(game_card);
-        //std::this_thread::sleep_for(milliseconds(500));
+        // std::this_thread::sleep_for(milliseconds(500));
     }
 
     cout << "Iteration count: " << iter_count << endl;
