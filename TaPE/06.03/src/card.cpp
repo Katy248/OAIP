@@ -44,7 +44,7 @@ void check_cell(Card &card, uint value)
 {
     for (uint i = 0; i < BINGO_SIZE; i++)
     {
-        for (uint j = 0; j < BINGO_SIZE; i++)
+        for (uint j = 0; j < BINGO_SIZE; j++)
         {
             if (card.lines[i][j].number == value)
             {
@@ -65,7 +65,7 @@ void out_card(Card &our_card)
         for (uint j = 0; j < BINGO_SIZE; j++)
         {
             Cell x = our_card.lines[i][j];
-
+            /*
             if (x.checked)
             {
                 cout << "[" << x.number << "]"
@@ -74,7 +74,8 @@ void out_card(Card &our_card)
             else
             {
             }
-            cout << x.number << " ";
+            */
+            cout << x.number << " (" << x.checked << ") ";
         }
         cout << std::endl;
     }
