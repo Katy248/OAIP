@@ -36,11 +36,13 @@ I won't cry for you, see (See)
 
 == Сборка
 
-В каждом public проекте на `C/C++` лежит `Makefile`, поэтому запустить проекты можно командой
+В каждом проекте на `C/C++` лежит (должен лежать) `Makefile`, `Justfile` или `.vcproj`, поэтому запустить проекты можно командами:
 
 [source,bash]
 ----
 make run
+just run
+# Не знаю как через консоль собирать vc проекты 
 ----
 
 include::Contributing.adoc[leveloffset=1]
