@@ -1,0 +1,1 @@
+#define uint unsigned int
