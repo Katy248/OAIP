@@ -22,6 +22,9 @@ build: $(OUTPUT)
 run: $(OUTPUT)
 	./$(OUTPUT)
 
+test: $(OUTPUT) sudoku
+	./$(OUTPUT) < sudoku
+
 clear:
 	rm -rf $(OBJ_DIR)
 	rm -rf $(BIN_DIR)
