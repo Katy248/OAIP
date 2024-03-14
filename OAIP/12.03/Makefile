@@ -6,7 +6,7 @@ SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
 OUTPUT = $(BIN_DIR)/sudoku
 
-.PHONY: run build
+.PHONY: run build test
 
 $(OUTPUT): $(OBJECTS) $(BIN_DIR)
 	@echo "Linking files"
