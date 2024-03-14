@@ -1,7 +1,4 @@
-#include "includes.h"
-#include "resolver.h"
-
-void play();
+#include "main.h"
 
 int main(int argc, char **argv)
 {
@@ -22,9 +19,11 @@ int main(int argc, char **argv)
 void play()
 {
     field *f = new_field();
-    resolve(f);
-
-    printf("%d", f->cells[0][0]);
-    printf("%d", f->cells[0][1]);
-    printf("%d", f->cells[0][2]);
+    if (solve(f, 0, 0))
+    {
+        printf("%d", f->cells[0][0]);
+        printf("%d", f->cells[0][1]);
+        printf("%d", f->cells[0][2]);
+    }
+    free(f);
 }
