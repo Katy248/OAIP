@@ -25,6 +25,7 @@ bool solve(field *f, uint row, uint col)
             {
                 return true;
             }
+            // print_field(f);
         }
         f->cells[row][col] = 0;
     }
@@ -51,10 +52,9 @@ bool is_safe(field *f, uint row, uint col, uint num)
     int start_row = row - row % 3,
         start_col = col - col % 3;
 
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            if (f->cells[i + start_row][j +
-                                        start_col] == num)
+    for (int i = start_row; i < start_row + 3; i++)
+        for (int j = start_col; j < start_col + 3; j++)
+            if (f->cells[i][j] == num)
                 return false;
 
     return true;

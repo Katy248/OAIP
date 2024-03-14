@@ -19,11 +19,15 @@ int main(int argc, char **argv)
 void play()
 {
     field *f = new_field();
+    print_field(f);
+
     if (solve(f, 0, 0))
     {
         printf("%d", f->cells[0][0]);
         printf("%d", f->cells[0][1]);
         printf("%d", f->cells[0][2]);
     }
+    else
+        print_field(f);
     free(f);
 }
