@@ -26,7 +26,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)
 build: $(OUTPUT)
 
 run: $(OUTPUT)
-	./$(OUTPUT)
+	./$(OUTPUT) $(SUDOKU_FILE_BIN)
 
 clear:
 	rm -rf $(OBJ_DIR)

@@ -3,6 +3,8 @@
 #include <fstream>
 #define GRID_SIZE 9
 
+using std::string;
+
 class Sudoku
 {
 
@@ -88,12 +90,18 @@ public:
 private:
     int **grid;
 };
-int main()
+int main(int argc, char **argv)
 {
     setlocale(LC_ALL, "Russian");
 
-    std::ifstream input_file("sudoku.txt");
-    std::string line;
+    string file_name = "sudoku.txt";
+    if (argc > 1)
+    {
+        file_name = argv[1];
+    }
+
+    std::ifstream input_file(file_name);
+    string line;
     Sudoku sudo;
 
     int currentPosY = 0;
