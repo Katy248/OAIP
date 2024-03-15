@@ -5,12 +5,18 @@ SRC_DIR = src
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 OUTPUT = $(BIN_DIR)/sudoku
+SUDOKU_FILE_SRC = $(SRC_DIR)/sudoku.txt
+SUDOKU_FILE_BIN = $(BIN_DIR)/sudoku.txt
 
 .PHONY: run build test
 
-$(OUTPUT): $(OBJECTS) $(BIN_DIR)
+$(OUTPUT): $(OBJECTS) $(BIN_DIR) $(SUDOKU_FILE_BIN)
 	@echo "Linking files"
 	$(CC) $(OBJECTS) -o $(OUTPUT)
+
+$(SUDOKU_FILE_BIN): $(SUDOKU_FILE_SRC)
+	@echo "Copy sudoku file"
+	cp $(SUDOKU_FILE_SRC) $(SUDOKU_FILE_BIN)
 
 # Object file from source file
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)
@@ -21,9 +27,6 @@ build: $(OUTPUT)
 
 run: $(OUTPUT)
 	./$(OUTPUT)
-
-test: $(OUTPUT) sudoku
-	./$(OUTPUT) < sudoku
 
 clear:
 	rm -rf $(OBJ_DIR)
