@@ -3,6 +3,7 @@ output
 output.*
 bin/
 obj/
+deps/
 
 # editor folders
 .vs/
