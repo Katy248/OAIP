@@ -2,6 +2,7 @@
 output
 output.*
 bin/
+build/
 obj/
 deps/
 
