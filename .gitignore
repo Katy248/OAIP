@@ -10,3 +10,7 @@ deps/
 .vs/
 .vscode/
 .idea/
+
+# other files
+*.zip
+*.tar.gz
