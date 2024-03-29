@@ -4,7 +4,7 @@ int main(int argc, char **argv)
 {
     generate_number();
 
-    cout << get_number() << "\n";
+    /* cout << get_number() << "\n"; */
     bool is_win = false;
 
     while (!is_win)
