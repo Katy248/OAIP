@@ -7,7 +7,7 @@ msgstr "Ваш вариант"
 msgid "Guessed right"
 msgstr "Угадано"
 
-msgid "On a right place"
+msgid "On the right place"
 msgstr "На своих местах"
 
 msgid "YOU WON!"

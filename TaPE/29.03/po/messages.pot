@@ -1,0 +1,14 @@
+msgid "Enter number"
+msgstr ""
+
+msgid "Your input"
+msgstr ""
+
+msgid "Guessed right"
+msgstr ""
+
+msgid "On the right place"
+msgstr ""
+
+msgid "YOU WON!"
+msgstr ""
