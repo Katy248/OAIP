@@ -5,6 +5,7 @@ bin/
 build/
 obj/
 deps/
+mo/
 
 # editor folders
 .vs/
