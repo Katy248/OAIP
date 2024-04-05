@@ -1,25 +1,34 @@
 #include "game.h"
+#include "libintl.h"
+#include <clocale>
 
-int main(int argc, char **argv)
-{
-    generate_number();
+#define APP_NAME "num-game"
 
-    /* cout << get_number() << "\n"; */
-    bool is_win = false;
+int main(int argc, char **argv) {
 
-    while (!is_win)
-    {
-        uint input;
-        cout << "Введите число:\n";
-        cin >> input;
-        uint digits = get_guessed_digits_count(input);
-        uint positions = get_guessed_digits_positions_count(input);
+  setlocale(LC_ALL, "");
+  textdomain(APP_NAME);
+  
+  generate_number();
+  
+  /* cout << get_number() << "\n"; */
+  bool is_win = false;
 
-        is_win = digits == 3 && positions == 3;
-        cout << "Ваш вариант -> " << input << " Угадано: " << digits << ". На своих местах: " << positions << "\n";
-    }
+  while (!is_win) {
+    uint input;
+    cout << gettext("Enter number") << ":\n";
+    cin >> input;
+    uint digits = get_guessed_digits_count(input);
+    uint positions = get_guessed_digits_positions_count(input);
 
-    cout << "*** ВЫ ВЫИГРАЛИ! ***";
+    is_win = digits == 3 && positions == 3;
+    cout << gettext("Your input") << " -> " << input <<" " << gettext("Guessed right") << " " << digits
+         << ". "<< gettext("On the right place") << ": " << positions << "\n";
+  }
 
-    return 0;
+  cout << "***"
+       << gettext("YOU WON!")
+       << "***";
+
+  return 0;
 }

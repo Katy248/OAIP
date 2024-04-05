@@ -1,0 +1,14 @@
+msgid "Enter number"
+msgstr "Введите число"
+
+msgid "Your input"
+msgstr "Ваш вариант"
+
+msgid "Guessed right"
+msgstr "Угадано"
+
+msgid "On a right place"
+msgstr "На своих местах"
+
+msgid "YOU WON!"
+msgstr "ВЫ ВЫИГРАЛИ!"

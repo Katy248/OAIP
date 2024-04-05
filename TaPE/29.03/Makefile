@@ -1,10 +1,18 @@
+APP_NAME = num-game
+
 CC = g++
 OBJ_DIR = obj
 BIN_DIR = bin
 SRC_DIR = src
+PO_DIR = po
+MO_DIR = mo
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
-OUTPUT = $(BIN_DIR)/parser
+OUTPUT = $(BIN_DIR)/$(APP_NAME)
+POS = $(wildcard $(PO_DIR)/*.po)
+MOS = $(patsubst $(PO_DIR)/%.po, $(MO_DIR)/%/$(APP_NAME).mo, $(POS))
+
+LOCALES_PATHS = $(patsubst $(PO_DIR)/%.po, /usr/share/locale/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
 
 CFLAGS += -O3
 CXXFLAGS += -Wall
@@ -24,16 +32,33 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)
 	@echo "Compile file $< to $@"
 	$(CC) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
 
-build: $(OUTPUT)
-
-run: $(OUTPUT)
-	./$(OUTPUT) $(SUDOKU_FILE_BIN)
-
-clear:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+# Compile locales
+$(MO_DIR)/%/$(APP_NAME).mo: $(PO_DIR)/%.po $(MO_DIR)/%/ $(MO_DIR)
+	msgfmt $< -o $@
+# Copy locales
+/usr/share/locale/%/LC_MESSAGES/$(APP_NAME).mo: $(MO_DIR)/%/$(APP_NAME).mo
+	cp $< $@
 
 # DIRS
 $(OBJ_DIR):
 	mkdir $@
 $(BIN_DIR):
 	mkdir $@
+$(MO_DIR):
+	mkdir $@
+$(MO_DIR)/%/:
+	mkdir $@
+
+build: $(OUTPUT) $(MOS)
+
+run: $(OUTPUT)
+	./$(OUTPUT)
+
+install: $(OUTPUT) $(LOCALES_PATHS)
+	cp $(OUTPUT) /usr/bin/$(APP_NAME)
+
+uninstall:
+	rm -f /usr/bin/$(APP_NAME)
+
+clear:
+	rm -rf $(OBJ_DIR) $(BIN_DIR) $(MO_DIR)
