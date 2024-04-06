@@ -36,22 +36,19 @@ uint get_number()
 
 uint get_guessed_digits_count(uint number)
 {
-    /*
-    TODO: Should better resolve matches
-    (if number 605 and input 606 -> matches is 3)
-    */
     int result = 0;
     uint digits[3];
     number_to_array(number, digits);
     for (uint i = 0; i < 3; i++)
     {
-        bool is_contains = false;
         for (uint j = 0; j < 3; j++)
         {
-            is_contains = is_contains || digits[i] == NUMBER_ARRAY[j];
+            if (digits[i] == NUMBER_ARRAY[j])
+            {
+                result++;
+                continue;
+            }
         }
-        if (is_contains)
-            result++;
     }
     return result;
 }
