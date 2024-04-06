@@ -12,7 +12,8 @@ OUTPUT = $(BIN_DIR)/$(APP_NAME)
 POS = $(wildcard $(PO_DIR)/*.po)
 MOS = $(patsubst $(PO_DIR)/%.po, $(MO_DIR)/%/$(APP_NAME).mo, $(POS))
 
-LOCALES_PATHS = $(patsubst $(PO_DIR)/%.po, /usr/share/locale/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
+LOCALE_DIR = /usr/share/locale
+LOCALES_PATHS = $(patsubst $(PO_DIR)/%.po, $(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
 
 CFLAGS += -O3
 CXXFLAGS += -Wall
@@ -36,7 +37,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)
 $(MO_DIR)/%/$(APP_NAME).mo: $(PO_DIR)/%.po $(MO_DIR)/%/ $(MO_DIR)
 	msgfmt $< -o $@
 # Copy locales
-/usr/share/locale/%/LC_MESSAGES/$(APP_NAME).mo: $(MO_DIR)/%/$(APP_NAME).mo
+$(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo: $(MO_DIR)/%/$(APP_NAME).mo $(LOCALE_DIR)/%/LC_MESSAGES
 	cp $< $@
 
 # DIRS
@@ -48,6 +49,11 @@ $(MO_DIR):
 	mkdir $@
 $(MO_DIR)/%/:
 	mkdir $@
+$(LOCALE_DIR)/%/LC_MESSAGES: $(LOCALE_DIR)/%/
+	mkdir $@
+$(LOCALE_DIR)/%/:
+	mkdir $@
+
 
 build: $(OUTPUT) $(MOS)
 
