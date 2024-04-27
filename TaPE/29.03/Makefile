@@ -1,19 +1,24 @@
 APP_NAME = num-game
 
 CC = g++
-OBJ_DIR = obj
-BIN_DIR = bin
-SRC_DIR = src
-PO_DIR = po
-MO_DIR = mo
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
-OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
-OUTPUT = $(BIN_DIR)/$(APP_NAME)
-POS = $(wildcard $(PO_DIR)/*.po)
-MOS = $(patsubst $(PO_DIR)/%.po, $(MO_DIR)/%/$(APP_NAME).mo, $(POS))
+OBJ_DIR ?= obj
+BIN_DIR ?= bin
+SRC_DIR ?= src
+PO_DIR ?= po
+MO_DIR ?= mo
+SOURCES := $(wildcard $(SRC_DIR)/*.cpp)
+OBJECTS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
+BIN_FILE := $(BIN_DIR)/$(APP_NAME)
+POS := $(wildcard $(PO_DIR)/*.po)
+MOS := $(patsubst $(PO_DIR)/%.po, $(MO_DIR)/%/$(APP_NAME).mo, $(POS))
 
-LOCALE_DIR = /usr/share/locale
-LOCALES_PATHS = $(patsubst $(PO_DIR)/%.po, $(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
+
+# Installation
+LOCALE_DIR ?= /usr/share/locale
+LOCALE_FILES := $(patsubst $(PO_DIR)/%.po, $(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
+INSTALLATION_DIR ?= /usr/bin
+INSTALLED_FILE := $(INSTALLATION_DIR)/$(APP_NAME)
+
 
 CFLAGS += -O3
 CXXFLAGS += -Wall
@@ -21,50 +26,72 @@ CXXFLAGS += -Wall
 SHELL = /bin/sh
 
 .SUFFIXES:
-.SUFFIXES: .cpp .o .d
-.PHONY: run build test
+.SUFFIXES: .cpp .o .d .po .mo
+.PHONY: all help run build test install uninstall
 
-$(OUTPUT): $(OBJECTS) $(BIN_DIR) $(SUDOKU_FILE_BIN)
+all: help
+help:
+	@echo "Makefile for $(APP_NAME)"
+	@echo ""
+	@echo "Available recipes:"
+	@echo "  build"
+	@echo "  run"
+	@echo "  install"
+	@echo "  uninstall"
+	@echo "  clear"
+
+build: $(BIN_FILE) $(MOS)
+	@echo "Build complete"
+
+run: build
+	./$(BIN_FILE)
+
+install: $(INSTALLED_FILE) $(LOCALE_FILES)
+	@echo "Installation complete"
+
+uninstall:
+	@rm -rf $(INSTALLED_FILE) $(LOCALE_FILES)
+	@echo "Uninstalled"
+
+clear:
+	@rm -rf $(OBJ_DIR) $(BIN_DIR) $(MO_DIR)
+	@echo "Cleared"
+
+
+
+$(BIN_FILE): $(OBJECTS) $(BIN_DIR) $(SUDOKU_FILE_BIN)
 	@echo "Linking files"
-	$(CC) $(OBJECTS) $(CXXFLAGS) $(CFLAGS) -o $(OUTPUT)
+	@$(CC) $(OBJECTS) $(CXXFLAGS) $(CFLAGS) -o $(BIN_FILE)
 
 # Object file from source file
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)
 	@echo "Compile file $< to $@"
-	$(CC) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
 
 # Compile locales
-$(MO_DIR)/%/$(APP_NAME).mo: $(PO_DIR)/%.po $(MO_DIR)/%/ $(MO_DIR)
-	msgfmt $< -o $@
+$(MO_DIR)/%/$(APP_NAME).mo: $(PO_DIR)/%.po $(MO_DIR)/%/
+	@echo "Compile translation file $< to $@"
+	@msgfmt $< -o $@
 # Copy locales
 $(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo: $(MO_DIR)/%/$(APP_NAME).mo $(LOCALE_DIR)/%/LC_MESSAGES
-	cp $< $@
+	@echo "Copy target locale file $< to $@"
+	@cp $< $@
+
+$(INSTALLED_FILE): $(BIN_FILE) $(INSTALLATION_DIR)
+	@echo "Installing $(APP_NAME) to $(INSTALLATION_DIR)"
+	@echo "Copy binary $(BIN_FILE) to $(INSTALLED_FILE)"
+	@cp $(BIN_FILE) $(INSTALLED_FILE)
 
 # DIRS
 $(OBJ_DIR):
-	mkdir $@
+	@echo "Creating objects directory $@"
+	@mkdir -p $@
 $(BIN_DIR):
-	mkdir $@
-$(MO_DIR):
-	mkdir $@
+	@echo "Creating binaries directory $@"
+	@mkdir -p $@
 $(MO_DIR)/%/:
-	mkdir $@
-$(LOCALE_DIR)/%/LC_MESSAGES: $(LOCALE_DIR)/%/
-	mkdir $@
-$(LOCALE_DIR)/%/:
-	mkdir $@
-
-
-build: $(OUTPUT) $(MOS)
-
-run: $(OUTPUT)
-	./$(OUTPUT)
-
-install: $(OUTPUT) $(LOCALES_PATHS)
-	cp $(OUTPUT) /usr/bin/$(APP_NAME)
-
-uninstall:
-	rm -f /usr/bin/$(APP_NAME)
-
-clear:
-	rm -rf $(OBJ_DIR) $(BIN_DIR) $(MO_DIR)
+	@echo "Creating locale subdirectory $@ in $<"
+	@mkdir -p $@
+$(LOCALE_DIR)/%/LC_MESSAGES:
+	@echo "Creating LC_MESSAGES directory $@"
+	@mkdir -p $@
