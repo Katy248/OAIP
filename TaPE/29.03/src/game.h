@@ -1,9 +1,4 @@
-#include <iostream>
-
 #define uint unsigned int
-
-using std::cin;
-using std::cout;
 
 uint get_number();
 void generate_number();

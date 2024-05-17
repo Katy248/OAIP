@@ -13,7 +13,8 @@ OBJECTS := $(patsubst $(SRC_DIR)/%.$(FILE_EXTENSION), $(OBJ_DIR)/%.o, $(SOURCES)
 BIN_FILE := $(BIN_DIR)/$(APP_NAME)
 POS := $(wildcard $(PO_DIR)/*.po)
 MOS := $(patsubst $(PO_DIR)/%.po, $(MO_DIR)/%/$(APP_NAME).mo, $(POS))
-
+CFLAGS += -O3
+CXXFLAGS += -Wall
 # Installation
 LOCALE_DIR ?= /usr/share/locale
 LOCALE_FILES := $(patsubst $(PO_DIR)/%.po, $(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))

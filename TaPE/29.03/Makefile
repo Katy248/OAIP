@@ -1,17 +1,17 @@
-APP_NAME = num-game
+APP_NAME ?= num-game
 
-CC = g++
-OBJ_DIR ?= obj
-BIN_DIR ?= bin
-SRC_DIR ?= src
-PO_DIR ?= po
-MO_DIR ?= mo
-SOURCES := $(wildcard $(SRC_DIR)/*.cpp)
-OBJECTS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
-BIN_FILE := $(BIN_DIR)/$(APP_NAME)
-POS := $(wildcard $(PO_DIR)/*.po)
-MOS := $(patsubst $(PO_DIR)/%.po, $(MO_DIR)/%/$(APP_NAME).mo, $(POS))
+CC ?= g++
 
+OBJ_DIR		?= obj
+BIN_DIR		?= bin
+SRC_DIR		?= src
+PO_DIR		?= po
+MO_DIR		?= mo
+SOURCES		:= $(wildcard $(SRC_DIR)/*.cpp)
+OBJECTS		:= $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
+BIN_FILE	:= $(BIN_DIR)/$(APP_NAME)
+POS			:= $(wildcard $(PO_DIR)/*.po)
+MOS			:= $(patsubst $(PO_DIR)/%.po, $(MO_DIR)/%/$(APP_NAME).mo, $(POS))
 
 # Installation
 LOCALE_DIR ?= /usr/share/locale
@@ -19,11 +19,10 @@ LOCALE_FILES := $(patsubst $(PO_DIR)/%.po, $(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAM
 INSTALLATION_DIR ?= /usr/bin
 INSTALLED_FILE := $(INSTALLATION_DIR)/$(APP_NAME)
 
-
 CFLAGS += -O3
 CXXFLAGS += -Wall
 
-SHELL = /bin/sh
+SHELL ?= /bin/sh
 
 .SUFFIXES:
 .SUFFIXES: .cpp .o .d .po .mo
@@ -44,7 +43,7 @@ build: $(BIN_FILE) $(MOS)
 	@echo "Build complete"
 
 run: build
-	./$(BIN_FILE)
+	@./$(BIN_FILE)
 
 install: $(INSTALLED_FILE) $(LOCALE_FILES)
 	@echo "Installation complete"
@@ -57,10 +56,8 @@ clear:
 	@rm -rf $(OBJ_DIR) $(BIN_DIR) $(MO_DIR)
 	@echo "Cleared"
 
-
-
-$(BIN_FILE): $(OBJECTS) $(BIN_DIR) $(SUDOKU_FILE_BIN)
-	@echo "Linking files"
+$(BIN_FILE): $(OBJECTS) $(BIN_DIR)
+	@echo "Linking files $(OBJECTS)"
 	@$(CC) $(OBJECTS) $(CXXFLAGS) $(CFLAGS) -o $(BIN_FILE)
 
 # Object file from source file
@@ -88,6 +85,9 @@ $(OBJ_DIR):
 	@mkdir -p $@
 $(BIN_DIR):
 	@echo "Creating binaries directory $@"
+	@mkdir -p $@
+$(DEPS_DIR):
+	@echo "Creating dependencies directory $@"
 	@mkdir -p $@
 $(MO_DIR)/%/:
 	@echo "Creating locale subdirectory $@ in $<"
