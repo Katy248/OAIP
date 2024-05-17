@@ -1,12 +1,8 @@
-#include <cstdlib>
-#include <iostream>
+#include <stdlib.h>
 
 #include "game.h"
 
 #define ASCII_DIGITS_OFFSET 48
-
-using std::cin;
-using std::cout;
 
 uint NUMBER = 0;
 uint NUMBER_ARRAY[3] = {0, 0, 0};

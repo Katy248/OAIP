@@ -1,4 +1,10 @@
-#define uint unsigned int
+#include <libintl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <time.h>
+
+typedef unsigned int uint;
 
 uint get_number();
 void generate_number();
