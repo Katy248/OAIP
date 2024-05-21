@@ -2,21 +2,23 @@ APP_NAME ?= num-game
 
 CC ?= gcc
 
-BUILD_DIR	?= build/
+CONFIGURATION ?=
 
-OUT_DIR		?= $(BUILD_DIR)/out
-OBJ_DIR		?= $(BUILD_DIR)/obj
-DEPS_DIR	?= $(BUILD_DIR)/deps
-SRC_DIR		?= src
-PO_DIR		?= po
-LOCALES_DIR	?= $(OUT_DIR)/locale
-POT_FILE	:= $(PO_DIR)/messages.pot
-SOURCES		:= $(wildcard $(SRC_DIR)/*.c)
-OBJECTS		:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
-DEPENDENCIES:= $(patsubst $(SRC_DIR)/%.c, $(DEPS_DIR)/%.d, $(SOURCES))
-BIN_FILE	:= $(OUT_DIR)/$(APP_NAME)
-POS			:= $(wildcard $(PO_DIR)/*.po)
-LOCALES		:= $(patsubst $(PO_DIR)/%.po, $(LOCALES_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
+BUILD_DIR	= ./build
+
+OUT_DIR		= $(BUILD_DIR)/out
+OBJ_DIR		= $(BUILD_DIR)/obj
+DEPS_DIR	= $(BUILD_DIR)/deps
+SRC_DIR		= ./src
+PO_DIR		= ./po
+LOCALES_DIR	= $(OUT_DIR)/locale
+POT_FILE	= $(PO_DIR)/messages.pot
+SOURCES		= $(wildcard $(SRC_DIR)/*.c)
+POS			= $(wildcard $(PO_DIR)/*.po)
+OBJECTS		= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
+DEPENDENCIES= $(patsubst $(SRC_DIR)/%.c, $(DEPS_DIR)/%.d, $(SOURCES))
+BIN_FILE	= $(OUT_DIR)/$(APP_NAME)
+LOCALES		= $(patsubst $(PO_DIR)/%.po, $(LOCALES_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
 
 # Installation
 INSTALLED_LOCALE_DIR ?= /usr/share/locale
@@ -31,7 +33,7 @@ NODEPS := all help uninstall clear
 
 .SUFFIXES:
 .SUFFIXES: .c .h .o .d .po .mo .pot
-.PHONY: all help run build test install uninstall clear generate-pot
+.PHONY: all help run build build-release build-debug test install uninstall clear generate-pot
 
 all: help
 help:
@@ -39,11 +41,22 @@ help:
 	@echo ""
 	@echo "Available recipes:"
 	@echo "  build"
+	@echo "  build-release"
+	@echo "  build-debug"
+	@echo "  build"
 	@echo "  run"
 	@echo "  install"
 	@echo "  uninstall"
 	@echo "  generate-pot"
 	@echo "  clear"
+
+build-release: CONFIGURATION = release
+build-release: CFLAGS +=
+build-release: build
+
+build-debug: CONFIGURATION = debug
+build-debug: CFLAGS += -g -ggdb -Og
+build-debug: build
 
 build: $(BIN_FILE) $(LOCALES)
 	@echo "Build complete"
@@ -79,7 +92,9 @@ endif
 
 # Binary file from objects
 $(BIN_FILE): $(OBJECTS) $(OUT_DIR)
-	@echo "Linking object files '$(shell ls $(OBJ_DIR))'"
+	@echo "Current configuration: '$(CONFIGURATION)'"
+	@echo "Using CFLAGS = '$(CFLAGS)'"
+	@echo "Linking object files '$(OBJECTS)' to $(BIN_FILE)"
 	@$(CC) $(OBJECTS) $(CFLAGS) -o $(BIN_FILE)
 
 # Object file from source file
