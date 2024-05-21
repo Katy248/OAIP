@@ -1,8 +1,10 @@
 #include <libintl.h>
+#include <signal.h>
 
 #include "game.h"
 
 #define APP_NAME "num-game"
+void on_kill();
 
 int main(int argc, char **argv)
 {
@@ -10,6 +12,11 @@ int main(int argc, char **argv)
   setlocale(LC_ALL, "");
 
   generate_number();
+
+  signal(SIGINT, on_kill);
+  signal(SIGABRT, on_kill);
+  signal(SIGTERM, on_kill);
+  signal(SIGTSTP, on_kill);
 
   /* cout << get_number() << "\n"; */
   bool is_win = false;
@@ -44,4 +51,11 @@ int main(int argc, char **argv)
   printf("***");
 
   return 0;
+}
+
+void on_kill()
+{
+  printf(gettext("Your number was: %d"), get_number());
+  printf("\n");
+  exit(-1);
 }
