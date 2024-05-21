@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-17 16:46+0300\n"
+"POT-Creation-Date: 2024-05-21 12:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,32 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.c:19
+#: src/main.c:27
+#, c-format
 msgid "Enter number"
 msgstr ""
 
-#: src/main.c:27
+#: src/main.c:35
+#, c-format
 msgid "Your input"
 msgstr ""
 
-#: src/main.c:31
+#: src/main.c:39
+#, c-format
 msgid "Guessed right"
 msgstr ""
 
-#: src/main.c:35
+#: src/main.c:43
+#, c-format
 msgid "On the right place"
 msgstr ""
 
-#: src/main.c:42
+#: src/main.c:50
+#, c-format
 msgid "YOU WON!"
+msgstr ""
+
+#: src/main.c:58
+#, c-format
+msgid "Your number was: %d"
 msgstr ""

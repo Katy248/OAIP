@@ -20,3 +20,8 @@ msgstr "На своих местах"
 
 msgid "YOU WON!"
 msgstr "ВЫ ВЫИГРАЛИ!"
+
+#: src/main.c:58
+#, c-format
+msgid "Your number was: %d"
+msgstr "Вашим числом было: %d"
