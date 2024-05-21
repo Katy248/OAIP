@@ -1,0 +1,35 @@
+msgid ""
+msgstr ""
+"Language: eo\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main.c:27
+#, c-format
+msgid "Enter number"
+msgstr "Enigu numeron"
+
+#: src/main.c:35
+#, c-format
+msgid "Your input"
+msgstr "Via opcio"
+
+#: src/main.c:39
+#, c-format
+msgid "Guessed right"
+msgstr "Divenis ĝuste"
+
+#: src/main.c:43
+#, c-format
+msgid "On the right place"
+msgstr "En la ĝusta loko"
+
+#: src/main.c:50
+#, c-format
+msgid "YOU WON!"
+msgstr "VI VENKIS!"
+
+#: src/main.c:58
+#, c-format
+msgid "Your number was: %d"
+msgstr "Via numero estis: %d"
