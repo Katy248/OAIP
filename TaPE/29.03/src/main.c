@@ -1,4 +1,5 @@
 #include <libintl.h>
+#include <locale.h>
 #include <signal.h>
 
 #include "game.h"
