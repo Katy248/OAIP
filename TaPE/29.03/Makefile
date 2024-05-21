@@ -4,23 +4,23 @@ CC ?= gcc
 
 BUILD_DIR	?= build/
 
+OUT_DIR		?= $(BUILD_DIR)/out
 OBJ_DIR		?= $(BUILD_DIR)/obj
-BIN_DIR		?= $(BUILD_DIR)/bin
 DEPS_DIR	?= $(BUILD_DIR)/deps
 SRC_DIR		?= src
 PO_DIR		?= po
-MO_DIR		?= $(BUILD_DIR)/mo
+LOCALES_DIR	?= $(OUT_DIR)/locale
 POT_FILE	:= $(PO_DIR)/messages.pot
 SOURCES		:= $(wildcard $(SRC_DIR)/*.c)
 OBJECTS		:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
 DEPENDENCIES:= $(patsubst $(SRC_DIR)/%.c, $(DEPS_DIR)/%.d, $(SOURCES))
-BIN_FILE	:= $(BIN_DIR)/$(APP_NAME)
+BIN_FILE	:= $(OUT_DIR)/$(APP_NAME)
 POS			:= $(wildcard $(PO_DIR)/*.po)
-MOS			:= $(patsubst $(PO_DIR)/%.po, $(MO_DIR)/%.mo, $(POS))
+LOCALES		:= $(patsubst $(PO_DIR)/%.po, $(LOCALES_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
 
 # Installation
-LOCALE_DIR ?= /usr/share/locale
-LOCALE_FILES := $(patsubst $(PO_DIR)/%.po, $(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
+INSTALLED_LOCALE_DIR ?= /usr/share/locale
+INSTALLED_LOCALES := $(patsubst $(PO_DIR)/%.po, $(INSTALLED_LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo, $(POS))
 INSTALLATION_DIR ?= /usr/bin
 INSTALLED_FILE := $(INSTALLATION_DIR)/$(APP_NAME)
 
@@ -45,17 +45,22 @@ help:
 	@echo "  generate-pot"
 	@echo "  clear"
 
-build: $(BIN_FILE) $(MOS)
+build: $(BIN_FILE) $(LOCALES)
 	@echo "Build complete"
 
-run: build
+run: 
+	@echo "Building '$(APP_NAME)'"
+	@make build
+	@echo "Running '$(APP_NAME)'"
+	@echo ""
+	@echo ""
 	@./$(BIN_FILE)
 
-install: $(INSTALLED_FILE) $(LOCALE_FILES)
+install: $(INSTALLED_FILE) $(INSTALLED_LOCALES)
 	@echo "Installation complete"
 
 uninstall:
-	@rm -rf $(INSTALLED_FILE) $(LOCALE_FILES)
+	@rm -rf $(INSTALLED_FILE) $(INSTALLED_LOCALES)
 	@echo "Uninstalled"
 
 generate-pot: $(POT_FILE)
@@ -73,13 +78,13 @@ ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(NODEPS))))
 endif
 
 # Binary file from objects
-$(BIN_FILE): $(OBJECTS) $(BIN_DIR)
+$(BIN_FILE): $(OBJECTS) $(OUT_DIR)
 	@echo "Linking object files '$(shell ls $(OBJ_DIR))'"
 	@$(CC) $(OBJECTS) $(CFLAGS) -o $(BIN_FILE)
 
 # Object file from source file
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(OBJ_DIR)
-	@echo "Compile file '$<' to '$@'"
+	@echo "Compile source file '$<' to object file '$@'"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Deps file from source file
@@ -88,12 +93,12 @@ $(DEPS_DIR)/%.d: $(SRC_DIR)/%.c $(DEPS_DIR)
 	$(CC) $(CFLAGS) -MM $< -o $@
 
 # Compile locales
-$(MO_DIR)/%.mo: $(PO_DIR)/%.po $(MO_DIR)
+$(LOCALES_DIR)/%/LC_MESSAGES/$(APP_NAME).mo: $(PO_DIR)/%.po $(LOCALES_DIR)/%/LC_MESSAGES
 	@echo "Compile translation file '$<' to '$@'"
 	@msgfmt $< -o $@
 
 # Copy locales
-$(LOCALE_DIR)/%/LC_MESSAGES/$(APP_NAME).mo: $(MO_DIR)/%.mo $(LOCALE_DIR)/%/LC_MESSAGES
+$(INSTALLED_LOCALE_DIR)/%.mo: $(LOCALES_DIR)/%.mo $(INSTALLED_LOCALE_DIR)/%/LC_MESSAGES
 	@echo "Copy target locale file '$<' to '$@'"
 	@cp $< $@
 
@@ -108,22 +113,18 @@ $(POT_FILE): $(SOURCES)
 
 # DIRS
 
-$(BUILD_DIR):
-	@echo "Creating build directory '$@'"
+$(OUT_DIR):
+	@echo "Creating outputs directory '$@'"
 	@mkdir -p $@
-
-$(OBJ_DIR): $(BUILD_DIR)
-	@echo "Creating objects directory '$@'"
+$(OBJ_DIR):
+	@echo "Creating object files directory '$@'"
 	@mkdir -p $@
-$(BIN_DIR): $(BUILD_DIR)
-	@echo "Creating binaries directory '$@'"
+$(LOCALES_DIR)/%/LC_MESSAGES:
+	@echo "Creating output directory for .mo file '$@'"
 	@mkdir -p $@
-$(MO_DIR): $(BUILD_DIR)
-	@echo "Creating directory for .mo files '$@'"
-	@mkdir -p $@
-$(DEPS_DIR): $(BUILD_DIR)
+$(DEPS_DIR):
 	@echo "Creating dependencies directory '$@'"
 	@mkdir -p $@
-$(LOCALE_DIR)/%/LC_MESSAGES:
+$(INSTALLED_LOCALE_DIR)/%/LC_MESSAGES:
 	@echo "Creating LC_MESSAGES directory '$@'"
 	@mkdir -p $@

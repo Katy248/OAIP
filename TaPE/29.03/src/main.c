@@ -1,12 +1,13 @@
+#include <libintl.h>
+
 #include "game.h"
 
 #define APP_NAME "num-game"
 
 int main(int argc, char **argv)
 {
-
-  setlocale(LC_ALL, "");
   textdomain(APP_NAME);
+  setlocale(LC_ALL, "");
 
   generate_number();
 
