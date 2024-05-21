@@ -2,12 +2,14 @@ APP_NAME ?= num-game
 
 CC ?= gcc
 
-OBJ_DIR		?= obj
-BIN_DIR		?= bin
-DEPS_DIR	?= deps
+BUILD_DIR	?= build/
+
+OBJ_DIR		?= $(BUILD_DIR)/obj
+BIN_DIR		?= $(BUILD_DIR)/bin
+DEPS_DIR	?= $(BUILD_DIR)/deps
 SRC_DIR		?= src
 PO_DIR		?= po
-MO_DIR		?= mo
+MO_DIR		?= $(BUILD_DIR)/mo
 POT_FILE	:= $(PO_DIR)/messages.pot
 SOURCES		:= $(wildcard $(SRC_DIR)/*.c)
 OBJECTS		:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
@@ -24,7 +26,7 @@ INSTALLED_FILE := $(INSTALLATION_DIR)/$(APP_NAME)
 
 CFLAGS += -O3 -Wall
 
-SHELL ?= /bin/sh
+SHELL ?= /bin/zsh
 NODEPS := all help uninstall clear
 
 .SUFFIXES:
@@ -60,7 +62,7 @@ generate-pot: $(POT_FILE)
 	@echo "Generated into '$(POT_FILE)'"
 
 clear:
-	@rm -rf $(OBJ_DIR) $(BIN_DIR) $(MO_DIR) $(DEPS_DIR)
+	@rm -rf $(BUILD_DIR)
 	@echo "Cleared"
 
 
@@ -72,7 +74,7 @@ endif
 
 # Binary file from objects
 $(BIN_FILE): $(OBJECTS) $(BIN_DIR)
-	@echo "Linking files '$(OBJECTS)'"
+	@echo "Linking object files '$(shell ls $(OBJ_DIR))'"
 	@$(CC) $(OBJECTS) $(CFLAGS) -o $(BIN_FILE)
 
 # Object file from source file
@@ -106,16 +108,20 @@ $(POT_FILE): $(SOURCES)
 
 # DIRS
 
-$(OBJ_DIR):
+$(BUILD_DIR):
+	@echo "Creating build directory '$@'"
+	@mkdir -p $@
+
+$(OBJ_DIR): $(BUILD_DIR)
 	@echo "Creating objects directory '$@'"
 	@mkdir -p $@
-$(BIN_DIR):
+$(BIN_DIR): $(BUILD_DIR)
 	@echo "Creating binaries directory '$@'"
 	@mkdir -p $@
-$(MO_DIR):
+$(MO_DIR): $(BUILD_DIR)
 	@echo "Creating directory for .mo files '$@'"
 	@mkdir -p $@
-$(DEPS_DIR):
+$(DEPS_DIR): $(BUILD_DIR)
 	@echo "Creating dependencies directory '$@'"
 	@mkdir -p $@
 $(LOCALE_DIR)/%/LC_MESSAGES:
