@@ -1,6 +1,5 @@
 msgid ""
 msgstr ""
-"Language-Team: Katy248\n"
 "Language: ru\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
