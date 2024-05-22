@@ -7,21 +7,21 @@ from gi.repository import  Gtk, Adw
 
 
 
-class MainWindow(Adw.ApplicationWindow):
+class GameWindow(Adw.ApplicationWindow):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
         
         view = Adw.ToolbarView()
         view.set_content(self.get_content())
         header_bar = Adw.HeaderBar()
-        header_bar.set_title_widget(Adw.WindowTitle(title= "Sea Battle", subtitle="fuck you"))
+        header_bar.set_title_widget(Adw.WindowTitle(title= "Sea Battle", subtitle="Shout them all"))
         view.add_top_bar(header_bar)
         self.set_content(view)
         self.set_size_request(500, 1000)
 
     def get_content(self) -> Gtk.Widget:
         
-        field = Field()
+        field = FieldBox()
         clamp = Adw.Clamp()
         clamp.set_margin_top(12)
         clamp.set_margin_bottom(12)
@@ -29,18 +29,17 @@ class MainWindow(Adw.ApplicationWindow):
         clamp.set_margin_end(12)
         clamp.set_child(field)
         return clamp
-    def check_cell_btn(self, btn: Gtk.Button, i: int, j: int):
+    
 
-        if random() < 0.8:
-            # btn.set_child(Gtk.Image(icon_name="fcitx-fullwidth-inactive-symbolic"))
-            btn.add_css_class("destructive-action")
-        else:
-            btn.set_child(Gtk.Image(icon_name="emblem-ok-symbolic"))
-            btn.add_css_class("suggested-action")
-
-class Field(Gtk.Box):
+class FieldBox(Gtk.Box):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        give_up_btn = Gtk.Button()
+        give_up_btn.set_label("Give up")
+        give_up_btn.add_css_class("pill")
+        give_up_btn.add_css_class("destructive-action")
+
         btn = Gtk.Button()
         btn.set_label("Press me")
         btn.add_css_class("pill")
@@ -93,6 +92,60 @@ class Field(Gtk.Box):
         self.set_orientation(Gtk.Orientation.VERTICAL)
         self.append(field_box)
         self.append(btn)
+        self.append(give_up_btn)
+    def check_cell_btn(self, btn: Gtk.Button, i: int, j: int):
+
+        if random() < 0.8:
+            # btn.set_child(Gtk.Image(icon_name="fcitx-fullwidth-inactive-symbolic"))
+            btn.add_css_class("destructive-action")
+        else:
+            btn.set_child(Gtk.Image(icon_name="emblem-ok-symbolic"))
+            btn.add_css_class("suggested-action")
+
+class MenuWindow(Adw.ApplicationWindow):
+    def __init__(self,  *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        view = Adw.ToolbarView()
+        view.set_content(self.get_content())
+        header_bar = Adw.HeaderBar()
+        header_bar.set_title_widget(Adw.WindowTitle(title= "Sea Battle", subtitle="Main menu"))
+        view.add_top_bar(header_bar)
+        self.set_content(view)
+        self.set_size_request(500, 1000)
+
+    def get_content(self) -> Gtk.Widget:
+        
+        title = Gtk.Label()
+        title.set_label("Sea Battle")
+        title.add_css_class("title-1")
+
+        host_btn = Gtk.Button()
+        host_btn.set_label("Host game")
+        host_btn.add_css_class("pill")
+        host_btn.add_css_class("suggested-action")
+
+        connect_btn = Gtk.Button()
+        connect_btn.set_label("Connect to game")
+        connect_btn.add_css_class("pill")
+        connect_btn.add_css_class("suggested-action")
+
+        box = Gtk.Box()
+        box.set_orientation(Gtk.Orientation.VERTICAL)
+        box.set_spacing(32)
+        box.set_valign(Gtk.Align.CENTER)
+
+        box.append(title)
+        box.append(host_btn)
+        box.append(connect_btn)
+
+        clamp = Adw.Clamp()
+        clamp.set_margin_top(12)
+        clamp.set_margin_bottom(12)
+        clamp.set_margin_start(12)
+        clamp.set_margin_end(12)
+        clamp.set_child(box)
+        return clamp
         
 
 class MyApp(Adw.Application):
@@ -101,7 +154,7 @@ class MyApp(Adw.Application):
         self.connect('activate', self.on_activate)
 
     def on_activate(self, app):
-        self.win = MainWindow(application=app)
+        self.win = MenuWindow(application=app)
         self.win.present()
 
 if __name__ == "__main__":
