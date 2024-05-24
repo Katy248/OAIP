@@ -1,35 +1,73 @@
 from random import random
 import sys, gi
+
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import  Gtk, Adw
-
-
+from gi.repository import Gtk, Adw
 
 
 class GameWindow(Adw.ApplicationWindow):
-    def __init__(self,  *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         view = Adw.ToolbarView()
         view.set_content(self.get_content())
         header_bar = Adw.HeaderBar()
-        header_bar.set_title_widget(Adw.WindowTitle(title= "Sea Battle", subtitle="Shout them all"))
+        header_bar.set_title_widget(Adw.WindowTitle(title="Sea Battle", subtitle="Shout them all"))
         view.add_top_bar(header_bar)
         self.set_content(view)
         self.set_size_request(500, 1000)
 
     def get_content(self) -> Gtk.Widget:
-        
         field = FieldBox()
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        box.set_spacing(32)
+        box.append(field)
+        box.append(ShipsChoser())
+
         clamp = Adw.Clamp()
         clamp.set_margin_top(12)
         clamp.set_margin_bottom(12)
         clamp.set_margin_start(12)
         clamp.set_margin_end(12)
-        clamp.set_child(field)
+        clamp.set_child(box)
         return clamp
-    
+
+
+class ShipsChoser(Gtk.Box):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        for i in range(1, 5):
+            label = Gtk.Label()
+            label.set_label(f"Ship {i}")
+            button = Gtk.Button()
+            button.set_label(f"{i}")
+            button.add_css_class("suggested-action")
+            button.add_css_class("circular")
+            button.connect("clicked", lambda btn: self.decrease_label(btn))
+
+            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+            box.set_spacing(12)
+            box.append(label)
+            box.append(button)
+            self.append(box)
+            self.set_halign(Gtk.Align.CENTER)
+
+        self.set_spacing(32)
+        self.set_orientation(Gtk.Orientation.HORIZONTAL)
+
+    def decrease_label(self, button):
+        if button.get_label() == "0":
+            return
+
+        button.set_label(f"{int(button.get_label()) - 1}")
+        button.remove_css_class("suggested-action")
+
+        if button.get_label() == "0":
+            button.remove_css_class("suggested-action")
+            button.add_css_class("flat")
+
 
 class FieldBox(Gtk.Box):
     def __init__(self, **kwargs):
@@ -49,17 +87,16 @@ class FieldBox(Gtk.Box):
         field_box.set_orientation(Gtk.Orientation.VERTICAL)
         field_box.set_spacing(12)
         field_box.set_halign(Gtk.Align.CENTER)
-        
+
         first_line = Gtk.Box()
         first_line.set_orientation(Gtk.Orientation.HORIZONTAL)
         first_line.set_spacing(12)
-
 
         CHARS = "АБВГДЕЖЗИК"
         for i in range(11):
             number_label = Gtk.Button()
             if i > 0:
-                number_label.set_label(f"{CHARS[i-1]}")
+                number_label.set_label(f"{CHARS[i - 1]}")
                 number_label.add_css_class("accent")
             else:
                 number_label.set_child(Gtk.Image(icon_name="map-symbolic"))
@@ -93,6 +130,7 @@ class FieldBox(Gtk.Box):
         self.append(field_box)
         self.append(btn)
         self.append(give_up_btn)
+
     def check_cell_btn(self, btn: Gtk.Button, i: int, j: int):
 
         if random() < 0.8:
@@ -102,20 +140,20 @@ class FieldBox(Gtk.Box):
             btn.set_child(Gtk.Image(icon_name="emblem-ok-symbolic"))
             btn.add_css_class("suggested-action")
 
+
 class MenuWindow(Adw.ApplicationWindow):
-    def __init__(self,  *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         view = Adw.ToolbarView()
         view.set_content(self.get_content())
         header_bar = Adw.HeaderBar()
-        header_bar.set_title_widget(Adw.WindowTitle(title= "Sea Battle", subtitle="Main menu"))
+        header_bar.set_title_widget(Adw.WindowTitle(title="Sea Battle", subtitle="Main menu"))
         view.add_top_bar(header_bar)
         self.set_content(view)
         self.set_size_request(500, 1000)
 
     def get_content(self) -> Gtk.Widget:
-        
         title = Gtk.Label()
         title.set_label("Sea Battle")
         title.add_css_class("title-1")
@@ -146,7 +184,7 @@ class MenuWindow(Adw.ApplicationWindow):
         clamp.set_margin_end(12)
         clamp.set_child(box)
         return clamp
-        
+
 
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
@@ -154,8 +192,9 @@ class MyApp(Adw.Application):
         self.connect('activate', self.on_activate)
 
     def on_activate(self, app):
-        self.win = MenuWindow(application=app)
+        self.win = GameWindow(application=app)
         self.win.present()
+
 
 if __name__ == "__main__":
     app = MyApp(application_id="ru.Katy248.SeaBattle")
