@@ -25,8 +25,7 @@ int main(int argc, char **argv)
   while (!is_win)
   {
     uint input;
-    printf(gettext("Enter number"));
-    printf(":\n");
+    printf("%s:\n", gettext("Enter number"));
     scanf("%d", &input);
 
     uint digits = get_guessed_digits_count(input);
@@ -49,14 +48,13 @@ int main(int argc, char **argv)
 
   printf("***");
   printf(gettext("YOU WON!"));
-  printf("***");
+  printf("***\n");
 
   return 0;
 }
 
 void on_kill()
 {
-  printf(gettext("Your number was: %d"), get_number());
-  printf("\n");
+  printf(gettext("Your number was: %d\n"), get_number());
   exit(-1);
 }

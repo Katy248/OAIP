@@ -22,5 +22,5 @@ msgstr "ВЫ ВЫИГРАЛИ!"
 
 #: src/main.c:58
 #, c-format
-msgid "Your number was: %d"
-msgstr "Вашим числом было: %d"
+msgid "Your number was: %d\n"
+msgstr "Вашим числом было: %d\n"

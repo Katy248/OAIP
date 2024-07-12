@@ -31,5 +31,5 @@ msgstr "VI VENKIS!"
 
 #: src/main.c:58
 #, c-format
-msgid "Your number was: %d"
-msgstr "Via numero estis: %d"
+msgid "Your number was: %d\n"
+msgstr "Via numero estis: %d\n"
