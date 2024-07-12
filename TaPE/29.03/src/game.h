@@ -4,6 +4,7 @@
 #include <time.h>
 
 typedef unsigned int uint;
+typedef char *str;
 
 uint get_number();
 void generate_number();

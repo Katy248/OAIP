@@ -7,7 +7,7 @@
 #define APP_NAME "num-game"
 void on_kill();
 
-int main(int argc, char **argv)
+int main(int argc, str *argv)
 {
   textdomain(APP_NAME);
   setlocale(LC_ALL, "");
